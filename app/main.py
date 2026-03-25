@@ -119,20 +119,19 @@ async def detect_signatures_by_filename(request: SignatureDetectionRequest):
             })
         
         for field in enhanced_result.get("signature_fields", []):
-            if field.get("is_filled"):
-                page = str(field.get("page", 1))
-                if page not in signatures_by_page:
-                    signatures_by_page[page] = []
-                coords = field.get("coordinates", {})
-                signatures_by_page[page].append({
-                    "x1": coords.get("x", 0),
-                    "y1": coords.get("y", 0),
-                    "x2": coords.get("x", 0) + coords.get("width", 200),
-                    "y2": coords.get("y", 0) + coords.get("height", 80),
-                    "confidence": 0.7,
-                    "type": field.get("field_type", "signature_field"),
-                    "label": field.get("label", "")
-                })
+            page = str(field.get("page", 1))
+            if page not in signatures_by_page:
+                signatures_by_page[page] = []
+            coords = field.get("coordinates", {})
+            signatures_by_page[page].append({
+                "x1": coords.get("x", 0),
+                "y1": coords.get("y", 0),
+                "x2": coords.get("x", 0) + coords.get("width", 200),
+                "y2": coords.get("y", 0) + coords.get("height", 80),
+                "confidence": 0.7 if field.get("is_filled") else 0.5,
+                "type": field.get("field_type", "signature_field"),
+                "label": field.get("label", "")
+            })
         
         import fitz
         doc = fitz.open(pdf_path)
@@ -192,20 +191,19 @@ async def detect_signatures(file: UploadFile = File(...)):
             })
         
         for field in enhanced_result.get("signature_fields", []):
-            if field.get("is_filled"):
-                page = str(field.get("page", 1))
-                if page not in signatures_by_page:
-                    signatures_by_page[page] = []
-                coords = field.get("coordinates", {})
-                signatures_by_page[page].append({
-                    "x1": coords.get("x", 0),
-                    "y1": coords.get("y", 0),
-                    "x2": coords.get("x", 0) + coords.get("width", 200),
-                    "y2": coords.get("y", 0) + coords.get("height", 80),
-                    "confidence": 0.7,
-                    "type": field.get("field_type", "signature_field"),
-                    "label": field.get("label", "")
-                })
+            page = str(field.get("page", 1))
+            if page not in signatures_by_page:
+                signatures_by_page[page] = []
+            coords = field.get("coordinates", {})
+            signatures_by_page[page].append({
+                "x1": coords.get("x", 0),
+                "y1": coords.get("y", 0),
+                "x2": coords.get("x", 0) + coords.get("width", 200),
+                "y2": coords.get("y", 0) + coords.get("height", 80),
+                "confidence": 0.7 if field.get("is_filled") else 0.5,
+                "type": field.get("field_type", "signature_field"),
+                "label": field.get("label", "")
+            })
         
         import fitz
         doc = fitz.open(temp_pdf)
