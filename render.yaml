@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: signature-service
+    runtime: docker
+    rootDir: signature_service
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DEPLOYMENT_MODE
+        value: render

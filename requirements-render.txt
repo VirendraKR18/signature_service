@@ -1,0 +1,9 @@
+# Lightweight requirements for deployment
+# Only PyMuPDF needed — no OCR, no OpenCV, no PyTorch
+
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+PyMuPDF>=1.24.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
