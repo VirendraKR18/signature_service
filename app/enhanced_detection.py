@@ -315,34 +315,3 @@ class EnhancedSignatureDetection:
             "handwritten_signatures": handwritten,
             "total_signatures_detected": len(signatures)
         }
-                })
-        
-        except Exception as e:
-            logger.warning(f"Metadata detection failed for page {page_num}: {e}")
-        
-        return signatures
-    
-    def _extract_date(self, text: str) -> Optional[str]:
-        """Extract date from text"""
-        for pattern in self.DATE_PATTERNS:
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                return match.group(0)
-        return None
-    
-    def _generate_summary(self, fields: List[Dict], signatures: List[Dict]) -> Dict:
-        """Generate summary statistics"""
-        filled_fields = sum(1 for f in fields if f.get('is_filled', False))
-        empty_fields = len(fields) - filled_fields
-        
-        electronic_sigs = sum(1 for s in signatures if s.get('signature_type') == 'electronic')
-        handwritten_sigs = len(signatures) - electronic_sigs
-        
-        return {
-            "total_signature_fields": len(fields),
-            "filled_fields": filled_fields,
-            "empty_fields": empty_fields,
-            "electronic_signatures": electronic_sigs,
-            "handwritten_signatures": handwritten_sigs,
-            "total_signatures_detected": len(signatures)
-        }
